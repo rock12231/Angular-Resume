@@ -7,11 +7,13 @@ import { AvinashComponent } from './avinash/avinash.component';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
+import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AvinashComponent
+    AvinashComponent,
+    AuthComponent,
   ],
   imports: [
     BrowserModule,

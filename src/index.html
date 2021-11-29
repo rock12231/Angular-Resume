@@ -1,13 +1,215 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Resume</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Favicons -->
+  <link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <!-- <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+  <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
 </head>
+
 <body>
   <app-root></app-root>
 </body>
+<script src="assets/vendor/jquery/jquery.min.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+<script src="assets/vendor/php-email-form/validate.js"></script>
+<script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+<script src="assets/vendor/counterup/counterup.min.js"></script>
+<script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="assets/vendor/venobox/venobox.min.js"></script>
+<script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+<script src="assets/vendor/typed.js/typed.min.js"></script>
+<script src="assets/vendor/aos/aos.js"></script>
+
+<!-- Template Main JS File -->
+<script src="assets/js/main.js"></script>
+
+<!-- Firebase Main JS File -->
+<!-- Firebase Main JS File -->
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyAB1e6-ymiQ-eYrOicLUVaWq_NoU54Klbg",
+      authDomain: "resume-1e7c5.firebaseapp.com",
+      databaseURL: "https://resume-1e7c5-default-rtdb.firebaseio.com",
+      projectId: "resume-1e7c5",
+      storageBucket: "resume-1e7c5.appspot.com",
+      messagingSenderId: "674354029796",
+      appId: "1:674354029796:web:f55ac19b208443317738f1",
+      measurementId: "G-6X7JZ7XE2S"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    document.getElementById('dashboard').style.display = "none"
+    document.getElementById('login').addEventListener('click', GoogleLogin)
+    document.getElementById('logout').addEventListener('click', LogoutUser)
+
+    let provider = new firebase.auth.GoogleAuthProvider()
+
+    function GoogleLogin() {
+      console.log('Login Btn Call')
+      firebase.auth().signInWithPopup(provider).then(res => {
+        console.log(res.user)
+        document.getElementById('LoginScreen').style.display = "none"
+        document.getElementById('dashboard').style.display = "block"
+        showUserDetails(res.user)
+      }).catch(e => {
+        console.log(e)
+      })
+    }
+
+    function showUserDetails(user) {
+      document.getElementById('userDetails').innerHTML = `
+                      <li><img src="${user.photoURL}" style="width:20%" class="rounded-circle"></li>
+                      <li style="font-size: x-small;" class="text-light mt-1">Your Name : ${user.displayName}</li>
+                      <li style="font-size: x-small;" class="text-light">Email : ${user.email}</li>
+                      `
+      // SOCIALMEDIA LINKS  
+      firebase.database().ref('data/socialMedia').on('value', (snap) => {
+        socialMedia = snap.val();
+        document.getElementById("linkedin").setAttribute("href", socialMedia.linkedin);
+        document.getElementById("github").setAttribute("href", socialMedia.github);
+        document.getElementById("facebook").setAttribute("href", socialMedia.facebook);
+        document.getElementById("twitter").setAttribute("href", socialMedia.twitter);
+      });
+      // ABOUT DATA
+      firebase.database().ref('data/about').on('value', (snap) => {
+        about = snap.val();
+        document.getElementById("fireBasic").innerHTML = about.basic;
+        document.getElementById("fireNew").innerHTML = about.new;
+        document.getElementById("firePresent").innerHTML = about.present;
+      });
+      // WEB DEVELOPER DATA
+      firebase.database().ref('data/webDeveloper').on('value', (snap) => {
+        var data = snap.val();
+        //console.log("Data", data);
+        //var keys = Object.keys(data);
+        //console.log("Keys", keys);
+        //var size = keys.length;
+        //console.log("size", size);
+        //console.log("newwwwwwwwwwwww", data.City);
+        document.getElementById("website").innerHTML = data.Website;
+        document.getElementById("degree").innerHTML = data.Degree;
+        document.getElementById("phone").innerHTML = data.Phone;
+        document.getElementById("freelance").innerHTML = data.Freelance;
+        document.getElementById("mail").innerHTML = data.Email;
+        document.getElementById("city").innerHTML = data.City;
+      });
+      // SKILL's
+      firebase.database().ref('data/skills').on('value', (snap) => {
+        var skills = snap.val();
+        //console.log("skill val", skills);
+        //var skillsKey = snap.key();
+        //console.log("keys", skillsKey);
+        var skl = document.querySelectorAll(".progress-bar")
+        var skl_name = document.querySelectorAll(".skill")
+        //var skl_val = document.querySelectorAll(".skill .val")
+        Object.keys(skills).forEach(function (data, index) {
+          console.log("con skills", skills[data])
+          skl[index].setAttribute("aria-valuenow", skills[data])
+          skl[index].style.width = skills[data] + "%"
+          var str = `${data} <i class="val">${skills[data]}%</i>`
+          //  skl_val[index].innerText = skills[data] + "%"
+          skl_name[index].innerHTML = str
+          //  skl_name[index].appendChild(skl_val)
+        })
+        //document.getElementById("linkedin").setAttribute("href", socialMedia.linkedin);
+        //document.getElementById("html").innerHTML = skills.HTML;
+        //document.getElementById("css").innerHTML = skills.CSS;
+        //document.getElementById("javascript").innerHTML = skills.JAVASCRIPT;
+        //document.getElementById("angular").innerHTML = skills.ANGULAR;
+        //document.getElementById("firebase").innerHTML = skills.FIREBASE;
+        // document.getElementById("arduino").innerHTML = skills.ARDUINO_&_IOT;
+        //document.getElementById("bootstrap").innerHTML = skills.BOOTSTRAP;
+        // document.getElementById("python").innerHTML = skills.PYTHON;
+        // document.getElementById("django").innerHTML = skills.DJANGO;
+        // document.getElementById("sql").innerHTML = skills.SQL;
+        //document.getElementById("robotics").innerHTML = skills.ROBOTICS;
+        //document.getElementById("raspberrypi").innerHTML = skills.RASPBERRY_PI;
+
+      });
+      //var query = firebase.database().ref("emails").orderByKey();
+      //query.once("value")
+      //.then(function (snapshot) {
+      // snapshot.forEach(function (childSnapshot) {
+      // key will be "ada" the first time and "alan" the second time
+      //var key = childSnapshot.key;
+      //console.log("snap",key)
+      // childData will be the actual contents of the child
+      //var childData = childSnapshot.val();
+      //document.getElementById("result").innerHTML = ('<li>'+ childData +'</li>');
+      //console.log("snap val", childData);
+      // });
+      // });
+
+    }
+
+    function checkAuthState() {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          document.getElementById('LoginScreen').style.display = "none"
+          document.getElementById('dashboard').style.display = "block"
+          document.getElementById('main').style.display = "block"
+          showUserDetails(user)
+        } else {
+          document.getElementById('main').style.display = "none"
+        }
+      })
+    }
+
+    function LogoutUser() {
+      console.log('Logout Btn Call')
+      firebase.auth().signOut().then(() => {
+        document.getElementById('LoginScreen').style.display = "block"
+        document.getElementById('dashboard').style.display = "none"
+      }).catch(e => {
+        console.log(e)
+      })
+    }
+    checkAuthState()
+
+      //var firebaseRef = firebase.database().ref('emails');
+      //document.querySelector('#send').addEventListener('click', () => {
+      //  const email = document.getElementById('email').value;
+       // firebaseRef.push(email);
+     // })
+
+     // on() method
+     // firebase.database().ref('emails').on('value', (snap) => {
+      //  console.log("on",snap.val());
+      //});
+      // once() method
+      //firebase.database().ref('emails').on('value', (snap) => {
+      //  console.log("once",snap.val());
+      //});
+
+
+  </script>
 </html>
