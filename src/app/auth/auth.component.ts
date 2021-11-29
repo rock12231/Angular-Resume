@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import firebase from 'firebase/compat/app';
+// import firebase from 'firebase/compat/app';
 
 
 @Component({
@@ -10,10 +10,12 @@ import firebase from 'firebase/compat/app';
 })
 export class AuthComponent implements OnInit {
 
-  user: any
   loginDiv: boolean = true
   registerDiv: boolean = false
-
+  userLog:any = {
+    pass: '',
+    user: ''
+  }
   constructor(public auth: AngularFireAuth) { }
 
   ngOnInit() {
@@ -29,11 +31,33 @@ export class AuthComponent implements OnInit {
     this.registerDiv = true
   }
 
-  login() {
-    this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  async createAccount(email: string, password: string) {
+    try {
+      const result = await this.auth.createUserWithEmailAndPassword(email, password);
+      return !!result;
+    } catch (e) {
+      return false;
+    }
   }
 
+  async login(email: string, password: string) {
+    try {
+      const result = await this.auth.signInWithEmailAndPassword(email, password);
+      return !!result;
+    } catch (e) {
+      return false;
+    }
+  }
+  
   logout() {
     this.auth.signOut();
   }
+  // login() {
+  //   this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  // }
+  test(){
+    console.log(this.userLog.pass,'Pass')
+    console.log(this.userLog.user,'user')
+  }
+ 
 }
