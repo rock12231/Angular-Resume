@@ -64,6 +64,7 @@ export class AuthComponent implements OnInit {
   }
   
   logout() {
+    localStorage.clear();
     this.auth.signOut();
     this.loginDiv = true
     this.registerDiv = false
