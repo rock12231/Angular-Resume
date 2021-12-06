@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
 import { AvinashComponent } from './avinash/avinash.component';
+import { GoogleAuthComponent } from './google-auth/google-auth.component';
 
 const routes: Routes = [
   {
@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: 'auth',
     component: AuthComponent
+  },
+  {
+    path: 'googleauth',
+    component: GoogleAuthComponent
   },
  
 ];

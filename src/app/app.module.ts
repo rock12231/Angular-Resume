@@ -10,12 +10,14 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
 import { AuthComponent } from './auth/auth.component';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { GoogleAuthComponent } from './google-auth/google-auth.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AvinashComponent,
     AuthComponent,
+    GoogleAuthComponent,
   ],
   imports: [
     BrowserModule,
