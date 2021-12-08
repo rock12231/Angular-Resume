@@ -1,5 +1,14 @@
 <div *ngIf="auth.user | async as user; else showLogin">
     <h1>Hello {{ user.displayName }}!</h1>
+    <ul>
+        <li> {{user.email}} </li>
+        <li> {{user.uid }} </li>
+        <li> {{user.photoURL}} </li>
+        <li> {{user | json}} </li>
+        <li>
+            <img src="{{user.photoURL}}" alt="aaa">
+        </li>
+    </ul>
     <button (click)="logout()">Logout</button>
 </div>
 <ng-template #showLogin>
