@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
 import firebase from 'firebase/compat/app';
 import { Observable } from 'rxjs';
 
@@ -12,30 +12,51 @@ import { Observable } from 'rxjs';
 export class AvinashComponent implements OnInit {
   title = 'Resume'
   item!: Observable<any>
+  skills!: Observable<any>
+  itemRef: AngularFireObject<any>
   loginDiv: boolean = true
   logoutDiv: boolean = false
   activeUser: any = localStorage.getItem('activeUser')
 
   constructor(db: AngularFireDatabase, public auth: AngularFireAuth) {
-    this.item = db.object('students').valueChanges();
-    console.log(this.item, "newwwwwwwwww data")
-  }
+    this.itemRef = db.object('data/skills');
+    this.itemRef.snapshotChanges().subscribe(action => {
+      // console.log("types",action.type)
+      // console.log("keys",action.key)
+      this.skills = action.payload.val()
+      console.log("val",action.payload.val())
+    })
+   }
+    // this.item = db.object('data/skills').valueChanges();
+    // console.log(this.item, "newwwwwwwwww data")
 
   ngOnInit() {
-    console.log(JSON.parse(this.activeUser), "User Data")
-    console.log(this.activeUser, "with out parse User Data")
     if (JSON.parse(this.activeUser)) {
       this.loginDiv = false
       this.logoutDiv = true
     }
-    // console.log(this.activeUser.displayName, "name")
-    // console.log(this.activeUser, "sefs")
-    // console.log(this.activeUser.Firebase.Auth.user.UserProfile, "profile")
+    // this.getData()
+
+
+  
   }
+
+  
+  // async getData() {
+  //   try {
+  //     const result = await this.db.object('data').valueChanges();
+  //     console.log(this.item, "newwwwwwwwww data")
+  //     return !!result;
+  //   } catch (e) {
+  //     console.log(e)
+  //     return false
+  //   }
+  // }
+  
 
   login() {
     this.activeUser = this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-
+    console.log(this.auth.user,"User data")
     // if (isUserLoggedIn) {
     //   setUserDetails({});
     //   setUserAuthStatus(false);

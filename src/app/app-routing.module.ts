@@ -6,7 +6,7 @@ import { GoogleAuthComponent } from './google-auth/google-auth.component';
 
 const routes: Routes = [
   {
-    path: 'avinash',
+    path: '',
     component: AvinashComponent
   },
   {
