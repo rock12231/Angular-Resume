@@ -44,7 +44,7 @@ export class AvinashComponent implements OnInit {
       // webDeveloper
       this.web = action.payload.val().webDeveloper
       // about
-      this.social = action.payload.val().about
+      this.about = action.payload.val().about
     })
   }
   // this.item = db.object('data/skills').valueChanges();
