@@ -15,6 +15,9 @@ export class AvinashComponent implements OnInit {
   itemRef: AngularFireObject<any>
 
   // firebase object variables
+  main = {
+    skills : new Observable<any>()
+  }
   item!: Observable<any>
   skills!: Observable<any>
   edu!: Observable<any>
@@ -35,7 +38,8 @@ export class AvinashComponent implements OnInit {
       // console.log("keys",action.key)
       console.log("val", action.payload.val())
       // skills object
-      this.skills = action.payload.val().skills
+      this.main.skills = action.payload.val().skills
+      console.log(this.main.skills,"main")
       // education objects of object
       this.edu = action.payload.val().education
       // socialMedia

@@ -65,7 +65,7 @@
   </div>
 
   <div>
-    {{ skills | json }}
+    {{ main.skills | json }}
   </div>
   <!-- ======= About Section ======= -->
   <section id="about" class="about">
@@ -184,7 +184,7 @@ A
           Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
       </div>
       <div class="row skills-content">
-        <div *ngFor="let item of skills | keyvalue" class="progress col-lg-6" data-aos="fade-up">
+        <div *ngFor="let item of main.skills | keyvalue" class="progress col-lg-6" data-aos="fade-up">
           <span class="skill">{{item.key}}<i class="val">{{item.value}}</i></span>
           <div class="progress-bar-wrap">
             <div class="progress-bar" role="progressbar" [style.width]="item.value + '%'" aria-valuenow="50"
