@@ -21,7 +21,6 @@ export class AvinashComponent implements OnInit {
   social!: Observable<any>
   about!: Observable<any>
   web!: Observable<any>
-
   // show and hide 
   loginDiv: boolean = true
   logoutDiv: boolean = false
@@ -46,6 +45,10 @@ export class AvinashComponent implements OnInit {
       // about
       this.about = action.payload.val().about
     })
+
+    // this.itemsRef = this.db.list('chat-orderId/')
+    // this.chatObj = this.itemsRef.snapshotChanges().pipe(map(changes => changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))))
+
   }
   // this.item = db.object('data/skills').valueChanges();
   // console.log(this.item, "newwwwwwwwww data")
@@ -55,23 +58,12 @@ export class AvinashComponent implements OnInit {
       this.loginDiv = false
       this.logoutDiv = true
     }
+    else{
+      this.loginDiv = true
+      this.logoutDiv = false
+    }
     // this.getData()
-
-
-
   }
-
-
-  // async getData() {
-  //   try {
-  //     const result = await this.db.object('data').valueChanges();
-  //     console.log(this.item, "newwwwwwwwww data")
-  //     return !!result;
-  //   } catch (e) {
-  //     console.log(e)
-  //     return false
-  //   }
-  // }
 
 
   login() {
@@ -100,6 +92,10 @@ export class AvinashComponent implements OnInit {
     // }
 
     localStorage.setItem('activeUser', JSON.stringify(this.activeUser))
+    if(this.auth.user){
+      this.loginDiv = false
+      this.logoutDiv = true
+    }
   }
 
   logout() {
