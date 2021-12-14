@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
 import firebase from 'firebase/compat/app';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-avinash',
@@ -13,10 +13,10 @@ export class AvinashComponent implements OnInit {
   // other variables
   title = 'Resume'
   itemRef: AngularFireObject<any>
-
+  itemsRefList: AngularFireList<any>
   // firebase object variables
   main = {
-    skills : new Observable<any>()
+    skills: new Observable<any>()
   }
   item!: Observable<any>
   skills!: Observable<any>
@@ -24,6 +24,7 @@ export class AvinashComponent implements OnInit {
   social!: Observable<any>
   about!: Observable<any>
   web!: Observable<any>
+  dataObj:any
   // show and hide 
   loginDiv: boolean = true
   logoutDiv: boolean = false
@@ -39,7 +40,7 @@ export class AvinashComponent implements OnInit {
       console.log("val", action.payload.val())
       // skills object
       this.main.skills = action.payload.val().skills
-      console.log(this.main.skills,"main")
+      console.log(this.main.skills, "main")
       // education objects of object
       this.edu = action.payload.val().education
       // socialMedia
@@ -49,10 +50,11 @@ export class AvinashComponent implements OnInit {
       // about
       this.about = action.payload.val().about
     })
+    // const snapshotToArray = snapshot => Object.entries(snapshot).map(e => Object.assign(e[1], { key: e[0] }));
 
-    // this.itemsRef = this.db.list('chat-orderId/')
-    // this.chatObj = this.itemsRef.snapshotChanges().pipe(map(changes => changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))))
-
+    this.itemsRefList = db.list('data/webDeveloper')
+    this.dataObj = this.itemsRefList.snapshotChanges().pipe(map(changes => changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))))
+    console.log("New User Data", this.dataObj)
   }
   // this.item = db.object('data/skills').valueChanges();
   // console.log(this.item, "newwwwwwwwww data")
@@ -62,11 +64,11 @@ export class AvinashComponent implements OnInit {
       this.loginDiv = false
       this.logoutDiv = true
     }
-    else{
+    else {
       this.loginDiv = true
       this.logoutDiv = false
     }
-    // this.getData()
+
   }
 
 
@@ -96,7 +98,7 @@ export class AvinashComponent implements OnInit {
     // }
 
     localStorage.setItem('activeUser', JSON.stringify(this.activeUser))
-    if(this.auth.user){
+    if (this.auth.user) {
       this.loginDiv = false
       this.logoutDiv = true
     }
