@@ -52,7 +52,7 @@ export class AvinashComponent implements OnInit {
     })
     // const snapshotToArray = snapshot => Object.entries(snapshot).map(e => Object.assign(e[1], { key: e[0] }));
 
-    this.itemsRefList = db.list('data/webDeveloper')
+    this.itemsRefList = db.list('data/webDeveloper/')
     this.dataObj = this.itemsRefList.snapshotChanges().pipe(map(changes => changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))))
     console.log("New User Data", this.dataObj)
   }
